@@ -2,8 +2,9 @@
 
 namespace App\Models\Payments;
 
+use App\Models\Payments\PaymentMethod;
 
-class CashPayment extends Payment
+final class CashPayment extends PaymentMethod
 {
 
    public function __construct(float $invoiceSum)

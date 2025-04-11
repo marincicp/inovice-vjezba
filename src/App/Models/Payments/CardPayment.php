@@ -2,9 +2,9 @@
 
 namespace App\Models\Payments;
 
-use App\Interfaces\PaymentMethodInterface;
+use App\Models\Payments\PaymentMethod;
 
-class CardPayment extends Payment
+final class CardPayment extends PaymentMethod
 {
 
    public function __construct(float $invoiceSum)

@@ -6,5 +6,5 @@ use App\Models\Invoice;
 
 interface InvoiceExporterInterface
 {
-   public function  export(Invoice $invoice): string;
+   public function  export(Invoice $invoice);
 }

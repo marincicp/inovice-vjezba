@@ -1,13 +1,13 @@
 <?php
 
-use App\Models\Exporters\PDFExporter;
+use App\Models\Customer;
 use App\Models\Invoice;
-use App\Models\InvoiceGenerator;
-use App\Models\Payments\CardPayment;
-use App\Models\Payments\CashPayment;
+use App\Models\Store;
+
+use function App\Core\dd;
 
 require __DIR__ . "/vendor/autoload.php";
-
+require_once __DIR__ . "/src/App/Core/helpers.php";
 
 $cart = [
    [
@@ -20,18 +20,20 @@ $cart = [
    ]
 ];
 
-$invoice = new Invoice($cart);
-
-$invoiceSum = $invoice->getSum();
-
-// $payInvoice = new CashPayment($invoiceSum);
-$payInvoice = new CardPayment($invoiceSum);
+$invoice = new Invoice($cart, "html");
 
 
+// CUSTOMER
+$testCardNumber =  1111222233334444;
+$customer = new Customer("Pero Peric", 12.30, $testCardNumber);
 
 
-if ($payInvoice->pay(22.2)) {
-   $invoiceGenerator = new InvoiceGenerator($invoice, new PDFExporter);
-} else {
-   echo  "Neuspješno plaćanje.";
+$store  = Store::getInstance();
+
+$isPaymentSuccess = $store->proccessPayment($customer, $invoice, "card");
+
+if ($isPaymentSuccess) {
+   $customer->setSaldo($invoice->getSum(), true);
 }
+
+dd($customer);
