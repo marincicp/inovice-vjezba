@@ -11,13 +11,13 @@ class InvoiceGenerator
    private Invoice $invoice;
    private InvoiceExporterInterface $exporter;
 
-   public function __construct(Invoice $invoice, InvoiceExporterInterface $exporter)
+   public function __construct(Invoice $invoice)
    {
 
       $this->invoice = $invoice;
-      $this->exporter = $exporter;
+      $this->exporter = new $invoice->exportType;
 
 
-      echo $this->exporter->export($this->invoice) . " from generator";
+      echo $this->exporter->export($this->invoice) . " --THIS INVOICE IS FROM GENERATOR--";
    }
 }
