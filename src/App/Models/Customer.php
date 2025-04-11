@@ -4,9 +4,10 @@ namespace App\Models;
 
 use App\Core\PaymentValidator;
 use App\Core\Validator;
+use App\Interfaces\CustomerInterface;
 use Exception;
 
-class Customer
+class Customer implements CustomerInterface
 {
    private string $name = "";
    private float $saldo = 0.00;
@@ -26,7 +27,7 @@ class Customer
    }
 
 
-   public function setName($name)
+   public function setName($name): string
    {
       if (! Validator::string($name, 3)) {
          throw new  Exception("Invalid name");
@@ -45,7 +46,7 @@ class Customer
       if ($decrease) {
          $this->saldo -=  $amount;
       } else {
-         $this->saldo = $amount;
+         $this->saldo += $amount;
       }
 
       return  round($this->saldo, 2);
