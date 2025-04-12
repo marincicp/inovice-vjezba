@@ -53,4 +53,14 @@ class Store
    {
       return $this->totalSold;
    }
+
+
+   public function getName(): string
+   {
+      return $this->name;
+   }
+   public function getLocation(): string
+   {
+      return $this->location;
+   }
 }
