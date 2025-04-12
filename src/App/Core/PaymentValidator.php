@@ -2,6 +2,7 @@
 
 namespace App\Core;
 
+use App\Enums\PaymentMethods;
 use Exception;
 
 class PaymentValidator extends Validator
@@ -15,7 +16,6 @@ class PaymentValidator extends Validator
    {
       return is_int($cardNumber) && strlen($cardNumber) === 16;
    }
-
 
 
    public static function validateUserCard(?int $card)
@@ -37,11 +37,31 @@ class PaymentValidator extends Validator
    }
 
 
-
    public static function validatePaymentMethod($paymentMethod)
    {
       if (! in_array($paymentMethod, self::ALLOWED_PAYMENT_METHODS)) {
          return false;
+      }
+      return true;
+   }
+
+
+
+
+
+   public static  function validatePaymentProccess($customer, $invoiceSum, $paymentMethod)
+   {
+      if (! PaymentValidator::validatePaymentMethod($paymentMethod)) {
+         throw new Exception("$paymentMethod is invalid payment method.");
+      }
+      if (! PaymentValidator::validateUserSaldo($customer->getSaldo(), $invoiceSum)) {
+         throw new Exception("You don't have enough money.");
+      }
+
+      if ($paymentMethod === PaymentMethods::card) {
+         if (! PaymentValidator::validateUserCard($customer->getCard())) {
+            throw new Exception("Please add your card first");
+         }
       }
       return true;
    }

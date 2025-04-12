@@ -33,13 +33,12 @@ class Store
    }
 
 
-   public function  proccessPayment(Customer $customer, Invoice $invoice, string $paymentMethod)
+   public function  makePayment(Customer $customer, Invoice $invoice, string $paymentMethod)
    {
       try {
-         $this->payment->makePayment($customer, $invoice, $paymentMethod);
+         $this->payment->proccessPayment($customer, $invoice, $paymentMethod);
 
-
-         new InvoiceGenerator($invoice);
+         $this->exportInvoice($invoice);
          $this->totalSold++;
 
          return true;
@@ -49,11 +48,15 @@ class Store
    }
 
 
+   public function exportInvoice($invoice)
+   {
+      new InvoiceGenerator($invoice);
+   }
+
    public function getTotalSold(): int
    {
       return $this->totalSold;
    }
-
 
    public function getName(): string
    {
