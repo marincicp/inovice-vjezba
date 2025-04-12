@@ -8,9 +8,7 @@ use Exception;
 class PaymentValidator extends Validator
 {
 
-
-   private const ALLOWED_PAYMENT_METHODS = ["card", "cash"];
-
+   // private const ALLOWED_PAYMENT_METHODS = ["card", "cash"];
 
    public static function validateCard(int $cardNumber)
    {
@@ -39,7 +37,9 @@ class PaymentValidator extends Validator
 
    public static function validatePaymentMethod($paymentMethod)
    {
-      if (! in_array($paymentMethod, self::ALLOWED_PAYMENT_METHODS)) {
+      $allowedMethods = array_keys(Config::$ALLOWED_PAYMENT_METHODS);
+
+      if (! in_array($paymentMethod, $allowedMethods)) {
          return false;
       }
       return true;
@@ -51,6 +51,7 @@ class PaymentValidator extends Validator
 
    public static  function validatePaymentProccess($customer, $invoiceSum, $paymentMethod)
    {
+
       if (! PaymentValidator::validatePaymentMethod($paymentMethod)) {
          throw new Exception("$paymentMethod is invalid payment method.");
       }
