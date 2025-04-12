@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Core\Config;
 use App\Models\Exporters\HTMLExporter;
 use App\Models\Exporters\PDFExporter;
 
@@ -13,14 +14,14 @@ class Invoice
 {
    private array $items = [];
    public string $exportType = "";
-   private const  ALLOWED_EXPORT_INVOICE_TYPE = [
-      "html" => HTMLExporter::class,
-      "pdf" => PDFExporter::class,
-   ];
+   private array  $ALLOWED_EXPORT_INVOICE_TYPES = [];
+
+
    public function __construct(
       array  $items,
       string $exportType
    ) {
+      $this->ALLOWED_EXPORT_INVOICE_TYPES = Config::$ALLOWED_EXPORT_INVOICE_TYPES;
       $this->items = $items;
       $this->setExportType($exportType);
    }
@@ -45,9 +46,9 @@ class Invoice
 
    private function setExportType($exportType)
    {
-      if (! array_key_exists($exportType, self::ALLOWED_EXPORT_INVOICE_TYPE)) {
+      if (! array_key_exists($exportType, $this->ALLOWED_EXPORT_INVOICE_TYPES)) {
          throw new Exception("Invalid export type");
       }
-      $this->exportType = self::ALLOWED_EXPORT_INVOICE_TYPE[$exportType];
+      $this->exportType = $this->ALLOWED_EXPORT_INVOICE_TYPES[$exportType];
    }
 }

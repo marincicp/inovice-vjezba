@@ -2,6 +2,7 @@
 
 namespace App\Models\Payments;
 
+use App\Core\Config;
 use App\Core\PaymentValidator;
 use App\Enums\PaymentMethods;
 use App\Models\Customer;
@@ -12,7 +13,13 @@ use Exception;
 
 class Payment
 {
-   private const ALLOWED_PAYMENT_METHODS = ["card" => CardPayment::class, "cash" => CashPayment::class];
+
+   private array $ALLOWED_PAYMENT_METHODS = [];
+
+   public function __construct()
+   {
+      $this->ALLOWED_PAYMENT_METHODS = Config::$ALLOWED_PAYMENT_METHODS;
+   }
 
    public function proccessPayment(Customer $customer, Invoice $invoice, string $paymentMethod)
    {
@@ -20,7 +27,7 @@ class Payment
 
       PaymentValidator::validatePaymentProccess($customer, $invoiceSum, $paymentMethod);
 
-      $paymentClass  = self::ALLOWED_PAYMENT_METHODS[$paymentMethod];
+      $paymentClass  = $this->ALLOWED_PAYMENT_METHODS[$paymentMethod];
       $paymentMethodInstance = new $paymentClass($invoiceSum);
 
       $paymentMethodInstance->pay($invoiceSum);

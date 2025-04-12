@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Core\Config;
 use App\Models\Payments\Payment;
 use Exception;
 
@@ -9,8 +10,8 @@ class Store
 {
 
    private static ?Store $instance  = null;
-   private string $name = "Super Store";
-   private string $location = "Zagreb";
+   private string $name = "";
+   private string $location = "";
    private ?Payment $payment;
    private int $totalSold = 0;
 
@@ -18,6 +19,9 @@ class Store
    private function __construct()
    {
       $this->payment = new Payment();
+
+      $this->name = Config::$storeName;
+      $this->location = Config::$storeLocation;
    }
 
    private function __clone() {}
