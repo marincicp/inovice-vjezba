@@ -12,6 +12,7 @@ use function App\Core\formatPrice;
 
 class Invoice
 {
+   private string $paidBy = "";
    private array $items = [];
    public string $exportType = "";
    private array  $ALLOWED_EXPORT_INVOICE_TYPES = [];
@@ -50,5 +51,18 @@ class Invoice
          throw new Exception("Invalid export type");
       }
       $this->exportType = $this->ALLOWED_EXPORT_INVOICE_TYPES[$exportType];
+   }
+
+
+   public function setPaidBy($method)
+   {
+
+      return $this->paidBy = $method;
+   }
+
+   public function getPaidBy()
+   {
+
+      return  strtoupper($this->paidBy);
    }
 }

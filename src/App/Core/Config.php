@@ -13,6 +13,9 @@ class Config
    public static string $storeName = "Super Store";
    public static string $storeLocation = "Zagreb";
 
+
+   public static string $INVOICE_PDF_DIR_PATH = "public/invoices_pdf/";
+
    public static array $ALLOWED_PAYMENT_METHODS =  [
       "card" => CardPayment::class,
       "cash" => CashPayment::class

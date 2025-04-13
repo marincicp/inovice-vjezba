@@ -10,6 +10,7 @@ use function App\Core\formatedDate;
 
 final class HTMLExporter implements InvoiceExporterInterface
 {
+   private const NAME = "html";
    private Store $store;
 
 
@@ -18,7 +19,11 @@ final class HTMLExporter implements InvoiceExporterInterface
    {
       $this->store = Store::getInstance();
    }
+   public function getName(): string
+   {
 
+      return self::NAME;
+   }
    public function export(Invoice $invoice)
    {
       $this->renderTable($invoice);
@@ -35,6 +40,8 @@ final class HTMLExporter implements InvoiceExporterInterface
       echo "</tbody>";
       $this->renderTableFooter($invoice);
       echo "</table>";
+      $this->renderPaymentMethod($invoice);
+
       echo "</div>";
    }
 
@@ -70,5 +77,11 @@ final class HTMLExporter implements InvoiceExporterInterface
       echo "<th align='center' scope='row' >Total:</th>";
       echo "<td align='center'>" . $invoice->getSum() . "$ </td>";
       echo " </tr> </tfoot>";
+   }
+
+
+   private function renderPaymentMethod($invoice)
+   {
+      echo "<p> Payment method: {$invoice->getPaidBy()} </p>";
    }
 }
