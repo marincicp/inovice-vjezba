@@ -18,6 +18,17 @@ class InvoiceGenerator
       $this->exporter = new $invoice->exportType;
 
 
-      echo $this->exporter->export($this->invoice) . " --THIS INVOICE IS FROM GENERATOR--";
+      echo $this->exporter->export($this->invoice) . $this->notificationMessage($this->exporter->getName());
+   }
+
+
+
+   private function notificationMessage($exportType)
+   {
+
+      return match ($exportType) {
+         "pdf" => 'FROM GENERATOR: The invoice has been saved in the "public/invoice_pdf" folder.',
+         "html" => "-- THIS INVOICE IS FROM GENERATOR --"
+      };
    }
 }
