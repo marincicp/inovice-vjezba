@@ -2,24 +2,14 @@
 
 namespace App\Models\Payments;
 
-use App\Core\Config;
 use App\Core\PaymentValidator;
-use App\Enums\PaymentMethods;
 use App\Models\Customer;
 use App\Models\Invoice;
-use App\Models\Payments\CardPayment;
-use App\Models\Payments\CashPayment;
-use Exception;
+use ErrorException;
 
 class Payment
 {
 
-   private array $ALLOWED_PAYMENT_METHODS = [];
-
-   public function __construct()
-   {
-      $this->ALLOWED_PAYMENT_METHODS = Config::$ALLOWED_PAYMENT_METHODS;
-   }
 
    public function proccessPayment(Customer $customer, Invoice $invoice, string $paymentMethod)
    {
@@ -27,8 +17,12 @@ class Payment
 
       PaymentValidator::validatePaymentProccess($customer, $invoiceSum, $paymentMethod);
 
-      $invoice->setPaidBy($paymentMethod);
+      $isPaymentSuccess =  PaymentFactory::create($paymentMethod)->pay($customer->getSaldo(), $invoiceSum);
 
-      PaymentFactory::create($paymentMethod)->pay($customer->getSaldo(), $invoiceSum);
+      if (! $isPaymentSuccess) {
+         throw new ErrorException("Failed to pay invoice");
+      }
+
+      $invoice->setPaidBy($paymentMethod);
    }
 }

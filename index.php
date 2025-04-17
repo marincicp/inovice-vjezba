@@ -20,7 +20,7 @@ $cart = [
    ]
 ];
 
-$invoice = new Invoice($cart, "html");
+$invoice = new Invoice($cart);
 
 
 // CUSTOMER
@@ -30,7 +30,7 @@ $customer = new Customer("Pero Peric", 22.30, $testCardNumber);
 
 $store  = Store::getInstance();
 
-$isPaymentSuccess = $store->makePayment($customer, $invoice, "card");
+$isPaymentSuccess = $store->makePayment($customer, $invoice, "card", "html");
 
 if ($isPaymentSuccess) {
    $customer->setSaldo($invoice->getSum(), true);

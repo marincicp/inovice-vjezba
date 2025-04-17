@@ -12,14 +12,11 @@ class Store
    private static ?Store $instance  = null;
    private string $name = "";
    private string $location = "";
-   private ?Payment $payment;
    private int $totalSold = 0;
 
 
    private function __construct()
    {
-      $this->payment = new Payment();
-
       $this->name = Config::$storeName;
       $this->location = Config::$storeLocation;
    }
@@ -37,24 +34,17 @@ class Store
    }
 
 
-   public function  makePayment(Customer $customer, Invoice $invoice, string $paymentMethod)
+   public function  makePayment(Customer $customer, Invoice $invoice, string $paymentMethod, $exportType)
    {
       try {
-         $this->payment->proccessPayment($customer, $invoice, $paymentMethod);
+         new InvoiceGenerator($customer, $invoice, $paymentMethod, $exportType);
 
-         $this->exportInvoice($invoice);
          $this->totalSold++;
 
          return true;
       } catch (Exception $err) {
          echo $err->getMessage();
       }
-   }
-
-
-   public function exportInvoice($invoice)
-   {
-      new InvoiceGenerator($invoice);
    }
 
    public function getTotalSold(): int

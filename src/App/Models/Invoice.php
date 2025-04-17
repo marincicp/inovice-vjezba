@@ -14,17 +14,12 @@ class Invoice
 {
    private string $paidBy = "";
    private array $items = [];
-   public string $exportType = "";
-   private array  $ALLOWED_EXPORT_INVOICE_TYPES = [];
 
 
    public function __construct(
       array  $items,
-      string $exportType
    ) {
-      $this->ALLOWED_EXPORT_INVOICE_TYPES = Config::$ALLOWED_EXPORT_INVOICE_TYPES;
       $this->items = $items;
-      $this->setExportType($exportType);
    }
 
 
@@ -43,14 +38,6 @@ class Invoice
    {
 
       return $this->items;
-   }
-
-   private function setExportType($exportType)
-   {
-      if (! array_key_exists($exportType, $this->ALLOWED_EXPORT_INVOICE_TYPES)) {
-         throw new Exception("Invalid export type");
-      }
-      $this->exportType = $this->ALLOWED_EXPORT_INVOICE_TYPES[$exportType];
    }
 
 
