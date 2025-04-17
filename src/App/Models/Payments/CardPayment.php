@@ -2,13 +2,14 @@
 
 namespace App\Models\Payments;
 
-use App\Models\Payments\PaymentMethod;
+use App\Interfaces\PaymentMethodInterface;
 
-final class CardPayment extends PaymentMethod
+final class CardPayment implements PaymentMethodInterface
 {
 
-   public function __construct(float $invoiceSum)
+
+   public function pay(float $amount, float $invoiceSum): bool
    {
-      $this->invoiceSum = $invoiceSum;
+      return $amount >= $invoiceSum;
    }
 }

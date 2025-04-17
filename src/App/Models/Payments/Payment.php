@@ -28,9 +28,7 @@ class Payment
       PaymentValidator::validatePaymentProccess($customer, $invoiceSum, $paymentMethod);
 
       $invoice->setPaidBy($paymentMethod);
-      $paymentClass  = $this->ALLOWED_PAYMENT_METHODS[$paymentMethod];
-      $paymentMethodInstance = new $paymentClass($invoiceSum);
 
-      $paymentMethodInstance->pay($invoiceSum);
+      PaymentFactory::create($paymentMethod)->pay($customer->getSaldo(), $invoiceSum);
    }
 }
