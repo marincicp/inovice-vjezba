@@ -3,6 +3,7 @@
 
 namespace App\Models\Exporters;
 
+use Exception;
 
 class ExportInvoiceFactory
 {
@@ -12,6 +13,7 @@ class ExportInvoiceFactory
       return match ($exportType) {
          "html" => new  HTMLExporter,
          "pdf" => new  PDFExporter,
+         "default" => throw new Exception("Unknown export type ")
       };
    }
 }

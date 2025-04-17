@@ -3,6 +3,7 @@
 namespace App\Models\Payments;
 
 use App\Interfaces\PaymentMethodInterface;
+use Exception;
 
 class PaymentFactory
 {
@@ -13,7 +14,7 @@ class PaymentFactory
          "card" => new CardPayment,
          "cash" => new  CashPayment,
 
-         "default" => "Unknown payment method"
+         "default" => throw new Exception("Unknown payment method")
       };
    }
 }

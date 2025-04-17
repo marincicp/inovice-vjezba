@@ -20,15 +20,30 @@ $cart = [
    ]
 ];
 
+
+$store  = Store::getInstance();
+
 $invoice = new Invoice($cart);
 
 
 // CUSTOMER
 $testCardNumber =  1111222233334444;
-$customer = new Customer("Pero Peric", 22.30, $testCardNumber);
+$customer = new Customer("Pero Peric", 22.30, null, $testCardNumber);
+
+////////////////////////////
+// CUSTOMER - REGISTER ONLINE
+$onlineCustomer1 = $store->registerCustomerOnline("Ana Anic", 20, "ana@test.com");
+
+$onlineCustomer2 = $store->registerCustomerOnline("Ivan Ivic", 20, "ivan@test.com");
+
+$onlineCustomer3 = $store->registerCustomerOnline("Ante Anic", 20, "ante@test.com");
 
 
-$store  = Store::getInstance();
+// SEND EMAIL NOTIFICATION
+$store->couponEmailNotification->notify(["content" => "Get 20% off with coupon code: FGDFGAS", "subject" => "New coupon"]);
+
+// $store->couponEmailNotification->detachAll();
+
 
 $isPaymentSuccess = $store->makePayment($customer, $invoice, "card", "html");
 

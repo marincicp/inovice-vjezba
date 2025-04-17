@@ -3,7 +3,8 @@
 namespace App\Models;
 
 use App\Core\Config;
-use App\Models\Payments\Payment;
+use App\Interfaces\SubjectInterface;
+use App\Notifications\CouponEmailNotification;
 use Exception;
 
 class Store
@@ -14,11 +15,12 @@ class Store
    private string $location = "";
    private int $totalSold = 0;
 
-
+   public SubjectInterface $couponEmailNotification;
    private function __construct()
    {
       $this->name = Config::$storeName;
       $this->location = Config::$storeLocation;
+      $this->couponEmailNotification  = new CouponEmailNotification();
    }
 
    private function __clone() {}
@@ -59,5 +61,20 @@ class Store
    public function getLocation(): string
    {
       return $this->location;
+   }
+
+   public function registerCustomerOnline(string $name, float $saldo, string $email): Customer
+   {
+      $testCardNumber =  1111222233334444;
+
+      if (! $email) {
+         throw new Exception("You must provide email");
+      }
+
+      $customer =  new Customer($name, $saldo, $email, $testCardNumber);
+
+      $this->couponEmailNotification->attach($customer);
+
+      return $customer;
    }
 }

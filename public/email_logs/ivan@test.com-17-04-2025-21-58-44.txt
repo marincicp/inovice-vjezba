@@ -1,0 +1,4 @@
+To: ivan@test.com 
+              From: super@store.com 
+              Subject:  New coupon   
+              Content: Hello Ivan Ivic,  Get 20% off with coupon code: FGDFGAS
