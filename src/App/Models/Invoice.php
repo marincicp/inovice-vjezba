@@ -2,11 +2,7 @@
 
 namespace App\Models;
 
-use App\Core\Config;
-use App\Models\Exporters\HTMLExporter;
-use App\Models\Exporters\PDFExporter;
 
-use Exception;
 use function App\Core\formatPrice;
 
 

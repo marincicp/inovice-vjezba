@@ -16,6 +16,8 @@ class Config
 
    public static string $INVOICE_PDF_DIR_PATH = "public/invoices_pdf/";
 
+   public static string $EMAIL_LOG_PATH = "public/email_logs/";
+
    public static array $ALLOWED_PAYMENT_METHODS =  [
       "card" => CardPayment::class,
       "cash" => CashPayment::class
